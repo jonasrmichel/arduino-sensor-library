@@ -10,54 +10,57 @@ Your application has several **constraints**. First, all of your application cod
 
 Implementing this application poses some **challenges**. Putting all of your sensors' behavior in a single sketch file would almost certainly be ugly and difficult to maintain. Intertwining each sensors' timing would be complex. Duty cycling (powering down) your board resets the onboard timers making it difficult to maintain consistent timing intervals.
 
-This library takes care of all of the above enabling you to juts focus on *what* each of your sensors needs to do and *how often*.
+This library can support of all of the above enabling you to juts focus on *what* each of your sensors needs to do and *how often*.
 
 ## Installing
 Install the Sensor library like you would any other [Arduino library](http://arduino.cc/en/Guide/Libraries). Drop the `Sensor/` directory into your Arduino home `libraries/` directory.
 
 ## Usage
-See the `FloorMatSensor` class included in this project as a usage example. The `FloorMatSensor` reads the values of 15 digital pins into a bit vector once every 60 seconds.
+The `SensorDemo` sketch included in this project contains a complete usage example. The project uses the `FloorMatSensor`, which reads the values of 15 digital pins into a bit vector once every 60 seconds.
 
-1. Extend the `Sensor` class for each required independent timed sensing action. 
-
-2. Your subclass just needs to implement the following methods.
+Extend the `Sensor` class for each required independent timed sensing action. Each sensor subclass just needs to implement the following methods.
   - `void init()`: Contains everything that needs to run in your sketch's `setup()`.
-  - `void run()`: Defines your sensor's periodic behavior (e.g., reading the values of 15 digital pins into a bit vector).
+  - `void run()`: Defines your sensor's periodic behavior.
 
-3. In your sketch...
-  1. Include the `Sensor` baseclass: `#include <Sensor.h>`
-  2. Include each of your subclasses: `#include <FloorMatSensor.h>`
-  3. Instantiate each of your sensors:
-    ```java
-    /**
-     *  The constructor parameters are:
-     *  name, units, interval (ms), duration (ms), resolution (ms), callback, pseudo-timer
-     */
+See the example `Sensor` subclasses included in this project for reference.
 
-    FloorMatSensor floormat = FloorMatSensor("floor-mat", "Integer", 60000, 10, 1, sensorCallback, NULL);
-    ```
-  4. Initialize each of your sensors:
-    ```java
-    void setup() {
+Next, you may use your custom sensor (e.g., `FloorMatSensor`) in your sketch.
+1. Include the `Sensor` baseclass `#include <Sensor.h>`.
+2. Include each of your sensor subclasses `#include <FloorMatSensor.h>`.
+4. Instantiate each of your sensors.
+  ```java
+  /**
+   *  The constructor parameters are:
+   *  name, units, interval (ms), duration (ms), resolution (ms), callback, pseudo-timer
+   */
 
-      floormat.init();
+  FloorMatSensor floormat = FloorMatSensor("floor-mat", "Integer", 60000, 10, 1, sensorCallback, &emuTimer);
+  ```
+5. Initialize each of your sensors.
+  ```java
+  void setup() {
+
+    floormat.init();
       
-    }
-    ```
-  5. Run each of your sensors:
-    ```java
-    void loop() {
+  }
+  ```
+6. Run each of your sensors.
+  ```java
+  void loop() {
 
-      floormat.check();
+    floormat.check();
       
-    }
-    ```
-  6. Define a callback, which you may call from any of your sensor subclasses using `_callback()`:
-    ```java
-    void sensorCallback(String s) {
+  }
+  ```
+7. Define a callback, which you may call from any of your sensor subclasses using `_callback()`.
+  ```java
+  void sensorCallback(String s) {
 
-      Serial.print("Sensor value read: ");
-      Serial.println(s);
+    Serial.println("*** sensor callback ***");
+    Serial.println(s);
       
-    }
-    ```
+  }
+  ```
+That's it! You can define and instantiate as many custom sensor subclasses as can fit on your Arduino board and they will each operate independently.
+
+See the `SensorDemo` sketch for a complete working example.
