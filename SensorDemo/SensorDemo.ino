@@ -62,6 +62,7 @@ void loop() {
 }
 
 void sensorCallback(String s) {
+  Serial.println("*** sensor callback ***");
   Serial.println(s);
 }
 
