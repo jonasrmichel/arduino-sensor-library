@@ -25,9 +25,10 @@ Extend the `Sensor` class for each required independent timed sensing action. Ea
 See the example `Sensor` subclasses included in this project for reference.
 
 Next, you may use your custom sensor (e.g., `FloorMatSensor`) in your sketch.
+
 1. Include the `Sensor` baseclass `#include <Sensor.h>`.
 2. Include each of your sensor subclasses `#include <FloorMatSensor.h>`.
-4. Instantiate each of your sensors.
+3. Instantiate each of your sensors.
   ```java
   /**
    *  The constructor parameters are:
@@ -36,7 +37,7 @@ Next, you may use your custom sensor (e.g., `FloorMatSensor`) in your sketch.
 
   FloorMatSensor floormat = FloorMatSensor("floor-mat", "Integer", 60000, 10, 1, sensorCallback, &emuTimer);
   ```
-5. Initialize each of your sensors.
+4. Initialize each of your sensors.
   ```java
   void setup() {
 
@@ -44,7 +45,7 @@ Next, you may use your custom sensor (e.g., `FloorMatSensor`) in your sketch.
       
   }
   ```
-6. Run each of your sensors.
+5. Run each of your sensors.
   ```java
   void loop() {
 
@@ -52,7 +53,7 @@ Next, you may use your custom sensor (e.g., `FloorMatSensor`) in your sketch.
       
   }
   ```
-7. Define a callback, which you may call from any of your sensor subclasses using `_callback()`.
+6. Define a callback, which you may call from any of your sensor subclasses using `_callback()`.
   ```java
   void sensorCallback(String s) {
 
